@@ -93,8 +93,13 @@ function processTouch(channel, value){
 
 function logValues() {
       for ( i = 0; i < 8; i++){
-         touchDelta[i] = touchValues[i] - touchTreshold[i];
-         console.log(i, touchValues[i], touchTreshold[i], touchDelta[i]);
+//         touchDelta[i] = touchCalibration[i];
+         deltaValTrshld = touchValues[i] -touchTreshold[i];
+         ratioValCal = parseFloat(touchValues[i]/touchCalibration[i]).toPrecision(2);
+         deltaValCalPercentage = parseFloat(ratioValCal - tresholdK[i]).toPrecision(2);
+         //ratioValCalTrshldK = parseFloat( tresholdK[i] / ratioValCal ).toPrecision(2);
+         console.log(i, touchValues[i], touchCalibration[i], touchTreshold[i], deltaValTrshld, 
+                    tresholdK[i], ratioValCal, deltaValCalPercentage);
      }
      console.log('\n');
 }

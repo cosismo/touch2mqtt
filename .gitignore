@@ -1,3 +1,6 @@
+#Arduino configuration
+configuration.h
+
 # Logs
 logs
 *.log

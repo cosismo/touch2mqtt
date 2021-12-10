@@ -1,15 +1,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
-
-// Replace the next variables with your SSID/Password combination
-//const char* ssid = "videosync";
-//const char* password = "andromeda6w4{q/U7,Q,Gc4*^";
-const char* ssid = "montdraco";
-const char* password = "andromedaA#0";
-// Add your MQTT Broker IP address, example:
-const char* mqtt_server = "192.168.4.99";
-//const char* mqtt_server = "192.168.10.100";
-//const char* mqtt_server = "YOUR_MQTT_BROKER_IP_ADDRESS";
+#include "configuration.h"
 
 
 
