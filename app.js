@@ -9,6 +9,7 @@ const nSamplesCalibration = 50;
 
 var tresholdK = [ 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9 ];
 var touchValues = [ 255, 255, 255, 255, 255, 255, 255, 255];
+var touchDelta = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchTreshold = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchCalibration = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchCalibrationCnt = [ 0, 0, 0, 0, 0, 0, 0, 0];
@@ -31,7 +32,7 @@ console.log (tresholdK);
 
 
 client.on('connect', function () {
-  client.publish('clip', '1');
+  //client.publish('clip', '1');
   client.subscribe('touch/#');
 })
 
@@ -74,7 +75,7 @@ function calibration(channel, value){
          console.log(i, touchCalibration[i], touchTreshold[i], "\n");
      }
      firstBoot = false;
-     client.publish('clip', '0')
+    // client.publish('clip', '0')
    }
    return 0;
 }
@@ -90,3 +91,12 @@ function processTouch(channel, value){
   return 0;
 }
 
+function logValues() {
+      for ( i = 0; i < 8; i++){
+         touchDelta[i] = touchValues[i] - touchTreshold[i];
+         console.log(i, touchValues[i], touchTreshold[i], touchDelta[i]);
+     }
+     console.log('\n');
+}
+
+setInterval(logValues, 5000);
