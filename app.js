@@ -6,8 +6,10 @@ var path = require('path');
 const { execSync } = require("child_process");
 
 var firstBoot = true;
+var lastTriggered = 0;
 const nSamplesCalibration = 50;
 const fiveMinutes = 300;
+
 
 var tresholdK = [ 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9 ];
 var touchValues = [ 255, 255, 255, 255, 255, 255, 255, 255];
@@ -94,7 +96,7 @@ function processTouch(channel, value){
   if ( value < touchTreshold[channel]){
      console.log("channel ", channel, " triggered ");
      client.publish('sound/'+ channel, "1");
-
+     lastTriggered = getUptime();
   } else{
      client.publish('sound/'+ channel, "0")
   }
@@ -103,6 +105,7 @@ function processTouch(channel, value){
 
 function logValues() {
        console.log("uptime:", getUptime());
+       console.log("lastTriggered:", lastTriggered);
       for ( i = 0; i < 8; i++){
 //         touchDelta[i] = touchCalibration[i];
          deltaValTrshld = touchValues[i] -touchTreshold[i];
