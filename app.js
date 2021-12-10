@@ -3,6 +3,7 @@ var client  = mqtt.connect('mqtt://127.0.0.1')
 const fs = require('fs')
 const YAML = require('yaml')
 var path = require('path');
+const { execSync } = require("child_process");
 
 var firstBoot = true;
 const nSamplesCalibration = 50;
@@ -13,6 +14,7 @@ var touchDelta = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchTreshold = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchCalibration = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchCalibrationCnt = [ 0, 0, 0, 0, 0, 0, 0, 0];
+
 
 //const configFileName = './calibration.yml';
 const configFileName = '/media/usb1/calibration.yml';
@@ -30,6 +32,11 @@ try {
 console.log (tresholdK);
 
 
+
+function getUptime() {
+  uptime = execSync("awk '{print $1}' /proc/uptime");
+  return parseFloat(uptime);
+}
 
 client.on('connect', function () {
   //client.publish('clip', '1');
@@ -92,6 +99,7 @@ function processTouch(channel, value){
 }
 
 function logValues() {
+       console.log("uptime:", getUptime());
       for ( i = 0; i < 8; i++){
 //         touchDelta[i] = touchCalibration[i];
          deltaValTrshld = touchValues[i] -touchTreshold[i];
