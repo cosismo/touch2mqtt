@@ -7,6 +7,7 @@ const { execSync } = require("child_process");
 
 var firstBoot = true;
 const nSamplesCalibration = 50;
+const fiveMinutes = 300;
 
 var tresholdK = [ 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9 ];
 var touchValues = [ 255, 255, 255, 255, 255, 255, 255, 255];
@@ -31,15 +32,15 @@ try {
 
 console.log (tresholdK);
 
-
-
 function getUptime() {
   uptime = execSync("awk '{print $1}' /proc/uptime");
   return parseFloat(uptime);
 }
 
 client.on('connect', function () {
-  //client.publish('clip', '1');
+  if (getUptime() < fiveMinutes){
+     client.publish('clip', '1')
+  }
   client.subscribe('touch/#');
 })
 
@@ -82,7 +83,9 @@ function calibration(channel, value){
          console.log(i, touchCalibration[i], touchTreshold[i], "\n");
      }
      firstBoot = false;
-    // client.publish('clip', '0')
+     if (getUptime() < fiveMinutes){
+       client.publish('clip', '0')
+     }
    }
    return 0;
 }
