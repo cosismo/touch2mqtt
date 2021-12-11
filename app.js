@@ -10,10 +10,9 @@ var lastTriggered = 0;
 const nSamplesCalibration = 50;
 const fiveMinutes = 300;
 
-
+var triggerTickCnt = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var tresholdK = [ 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9 ];
 var touchValues = [ 255, 255, 255, 255, 255, 255, 255, 255];
-var touchDelta = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchTreshold = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchCalibration = [ 0, 0, 0, 0, 0, 0, 0, 0];
 var touchCalibrationCnt = [ 0, 0, 0, 0, 0, 0, 0, 0];
@@ -105,7 +104,9 @@ function processTouch(channel, value){
 
 function logValues() {
        console.log("uptime:", getUptime());
+       client.publish('watchdog/processInfo/touch2mqtt/uptime', uptime)
        console.log("lastTriggered:", lastTriggered);
+       client.publish('watchdog/processInfo/touch2mqtt/lastTriggered', String(lastTriggered))
       for ( i = 0; i < 8; i++){
 //         touchDelta[i] = touchCalibration[i];
          deltaValTrshld = touchValues[i] -touchTreshold[i];
@@ -119,3 +120,4 @@ function logValues() {
 }
 
 setInterval(logValues, 5000);
+
